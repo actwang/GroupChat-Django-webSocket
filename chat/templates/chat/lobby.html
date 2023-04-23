@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lobby</title>
+</head>
+<body>
+    <h1>Hello Websocket</h1>
+
+    <form id="form">
+        <input type="text" name="message"/>
+    </form>
+
+    <!--This is a dynamic div that only appears when user have messages-->
+    <div id="messages" >
+
+    </div> 
+
+    <script type="text/javascript">
+        // use websocket connection instead of http
+        let url = `ws://${window.location.host}/ws/socket-server/`;
+         const chatSocket = new WebSocket(url) // immediately tries to connect
+
+        // client browser will print the connection success message response 
+        // from server upon successful connection
+         chatSocket.onmessage = function(e){
+            let data= JSON.parse(e.data);
+            console.log('Data', data);
+
+            if (data.type === 'chat'){
+                let messages= document.getElementById('messages');
+                // insert new message into the div
+                messages.insertAdjacentHTML('beforeend', `<div> 
+                                            <p>${data.message}</p> </div`);
+            }
+         }
+
+         let form = document.getElementById('form');
+         form.addEventListener('submit', (e)=>{
+            e.preventDefault();
+            // sends the input value to chatSocket
+            let message = e.target.message.value;
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+         });
+         form.reset();
+    </script>
+</body>
+</html>
