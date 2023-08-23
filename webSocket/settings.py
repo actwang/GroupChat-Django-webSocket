@@ -77,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'webSocket.wsgi.application'
+# WSGI_APPLICATION = 'webSocket.wsgi.application'
 
 
 # Database

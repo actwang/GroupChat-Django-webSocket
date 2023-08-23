@@ -11,7 +11,7 @@ class ChatConsumer(WebsocketConsumer):
     # when the connection is first successful, we will send a message
     def connect(self):
         self.room_group_name = 'test'
-        # Add a user's channel to the group
+        # Add a user's channel to the group(channel name is automatically named by channels)
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
             self.channel_name
